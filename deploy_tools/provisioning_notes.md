@@ -30,8 +30,9 @@ Provisioning a new site
 
 ## Folder structure:
     /home/username
-    `-- superlist-staging.sandbox.dev
-        |-- database
-        |-- source
-        |-- static
-        `-- virtualenv
+    `-- sites
+        `-- SITENAME
+            |-- database
+            |-- source
+            |-- static
+            `-- virtualenv
