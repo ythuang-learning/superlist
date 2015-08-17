@@ -1,10 +1,10 @@
 [Unit]
-Description=Gunicorn server for superlists-staging.sandbox.dev
+Description=Gunicorn server for SITENAME
 
 [Service]
-User=johnny
-WorkingDirectory=/home/johnny/sites/superlist-staging.sandbox.dev/source
-ExecStart=/home/johnny/sites/superlist-staging.sandbox.dev/virtualenv/bin/gunicorn --bind unix:/tmp/superlists-staging.sandbox.dev.socket superlists.wsgi:application
+User=USERNAME
+WorkingDirectory=/home/USERNAME/sites/SITENAME/source
+ExecStart=/home/USERNAME/sites/SITENAME/virtualenv/bin/gunicorn --bind unix:/tmp/SITENAME.socket superlists.wsgi:application
 
 [Install]
 WantedBy=multi-user.target
