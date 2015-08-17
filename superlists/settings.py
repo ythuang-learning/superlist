@@ -23,7 +23,7 @@ SECRET_KEY = '65(tj)-ady+!-t_$dd#t5ss7m=p%0i#=*cnjyw3%z30ap6-cq+'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ['superlists-staging.sandbox.dev']
 
