@@ -5,7 +5,7 @@ from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import sys
-
+import time
 
 class NewVisitorTest(StaticLiveServerTestCase):
 
@@ -26,7 +26,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
 
     def setUp(self):
         self.browser = webdriver.Chrome()
-        self.browser.implicitly_wait(5)
+        self.browser.implicitly_wait(50)
 
     def tearDown(self):
         self.browser.quit()
@@ -96,6 +96,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         input_box.send_keys(Keys.ENTER)
 
         # Francis gets his own unique URL
+        time.sleep(5)
         francis_list_url = self.browser.current_url
         self.assertRegex(francis_list_url, '/lists/.+')
         self.assertNotEqual(francis_list_url, edith_list_url)
@@ -124,6 +125,7 @@ class NewVisitorTest(StaticLiveServerTestCase):
         # centered there too
         input_box.send_keys('testing\n')
 
+        time.sleep(5)
         input_box = self.browser.find_element_by_id('id_new_item')
         self.assertAlmostEqual(
             input_box.location['x'] + input_box.size['width'] / 2,
