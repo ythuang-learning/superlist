@@ -29,9 +29,9 @@ Provisioning a new site
 * replace SITENAME with, eg, staging.my.domain.com
 
 ## Folder structure:
-/home/username
-`-- superlist-staging.sandbox.dev
-    |-- database
-    |-- source
-    |-- static
-    `-- virtualenv
+    /home/username
+    `-- superlist-staging.sandbox.dev
+        |-- database
+        |-- source
+        |-- static
+        `-- virtualenv
