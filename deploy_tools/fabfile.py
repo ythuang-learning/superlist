@@ -1,5 +1,5 @@
 from fabric.contrib.files import append, exists, sed
-from fabric.api import env, local, run
+from fabric.api import env, local, run, sudo
 import random
 
 REPO_URL = 'https://github.com/ythuang/superlist.git'
@@ -50,6 +50,33 @@ def _update_database(source_folder):
     run('cd %s && ../virtualenv/bin/python3 manage.py migrate --noinput' % (source_folder,))
 
 
+def _setup_nginx(source_folder, username, sitename):
+    tmp_config = '%s/deploy_tools/%s' % (source_folder, sitename)
+    nginx_config = '/etc/nginx/sites-available/%s' % (sitename,)
+    active_nginx_config = '/etc/nginx/sites-enabled/%s' % (sitename,)
+    if exists(nginx_config):
+        sudo('rm %s' % (nginx_config,))
+        sudo('rm %s' % (active_nginx_config,))
+
+    run('cp %s/deploy_tools/nginx.template.conf %s' % (source_folder, tmp_config))
+    sed(tmp_config, "SITENAME", sitename)
+    sed(tmp_config, "USERNAME", username)
+    sudo('mv %s %s' % (tmp_config, nginx_config))
+    sudo('ln -s %s %s' % (nginx_config, active_nginx_config))
+
+
+def _setup_gunicorn_systemd(source_folder, username, sitename):
+    tmp_config = '%s/deploy_tools/gunicorn-%s.service' % (source_folder, sitename)
+    gunicorn_config = '/lib/systemd/system/gunicorn-%s.service' % (sitename,)
+    if exists(gunicorn_config):
+        sudo('rm %s' % (gunicorn_config,))
+
+    run('cp %s/deploy_tools/gunicorn-systemd.template.service %s' % (source_folder, tmp_config))
+    sed(tmp_config, "SITENAME", sitename)
+    sed(tmp_config, "USERNAME", username)
+    sudo('mv %s %s' % (tmp_config, gunicorn_config))
+
+
 def deploy():
     site_folder = '/home/%s/sites/%s' % (env.user, env.host)
     source_folder = site_folder + '/source'
@@ -59,3 +86,5 @@ def deploy():
     _update_virtualenv(source_folder)
     _update_static_files(source_folder)
     _update_database(source_folder)
+    _setup_nginx(source_folder, env.user, env.host)
+    _setup_gunicorn_systemd(source_folder, env.user, env.host)
